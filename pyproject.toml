@@ -1,7 +1,13 @@
 [project]
 name = "pg-attn-perf"
 version = "0.1.0"
-description = "Add your description here"
+description = "PagedAttention performance benchmarking"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["vllm"]
+dependencies = [
+    "vllm",
+    "transformers",
+    "nvidia-ml-py",
+    "pandas",
+    "pyyaml",
+]
