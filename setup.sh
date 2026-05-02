@@ -9,3 +9,4 @@ export MAX_JOBS=12
 export VLLM_USE_PRECOMPILED=1
 
 uv pip install vllm --torch-backend=cu129 -v
+uv pip install nvidia-cuda-runtime-cu12 nvidia-cuda-cupti-cu12 nvidia-cudnn-cu12 nvidia-cusparselt-cu12 nvidia-nccl-cu12 nvidia-cublas-cu12 nvidia-cufft-cu12 nvidia-curand-cu12 nvidia-cusolver-cu12 nvidia-cusparse-cu12 nvidia-nvtx-cu12 nvidia-nvjitlink-cu12 nvidia-nvshmem-cu12

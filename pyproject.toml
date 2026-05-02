@@ -10,4 +10,6 @@ dependencies = [
     "nvidia-ml-py",
     "pandas",
     "pyyaml",
+    "python-dotenv>=1.2.2",
+    "accelerate>=1.13.0",
 ]
