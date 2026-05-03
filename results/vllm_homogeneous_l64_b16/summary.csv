@@ -1,0 +1,2 @@
+name,backend,model,block_size,num_sequences,total_prompt_tokens,total_output_tokens,total_time_s,throughput_tok_per_s,avg_latency_s,avg_gpu_util_pct,peak_gpu_mem_used_mb,avg_gpu_mem_used_mb,gpu_mem_total_mb,avg_power_w
+vllm_homogeneous_l64_b16,vllm,meta-llama/Llama-3.2-1B,16,1000,65000,128000,4.662184676155448,27454.939881436003,4.6499760039150715,91.44680851063829,43102.875,43102.789893617024,46068.0,294.2628723404256
