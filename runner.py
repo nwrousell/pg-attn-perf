@@ -66,11 +66,7 @@ def run_experiment(config: dict):
         vllm_monitor.start()
     t0 = time.perf_counter()
 
-    if config.get("use_torch", False):
-        torch.cuda.profiler.start()
     request_df = backend.run(wl)
-    if config.get("use_torch", False):
-        torch.cuda.profiler.stop()
 
     total_time = time.perf_counter() - t0
     monitor.stop()
