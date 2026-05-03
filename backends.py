@@ -30,6 +30,7 @@ class VLLMBackend(Backend):
             model=config["model"],
             dtype=self.dtype,
             block_size=self.block_size,
+            enforce_eager=config.get("enforce_eager", False),
         )
         self._tokenizer = self.llm.get_tokenizer()
 
