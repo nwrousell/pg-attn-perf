@@ -1,2 +1,2 @@
 name,backend,model,block_size,num_sequences,total_prompt_tokens,total_output_tokens,total_time_s,throughput_tok_per_s,avg_latency_s,avg_gpu_util_pct,peak_gpu_mem_used_mb,avg_gpu_mem_used_mb,gpu_mem_total_mb,avg_power_w
-vllm_b16_memory_pressure,vllm,Qwen/Qwen2.5-1.5B-Instruct,16,500,315726,163765,26.282990589737892,6230.8358495528855,26.272830890491605,93.91634980988593,23174.5625,23169.999762357413,24576.0,332.57178707224335
+vllm_b16_memory_pressure,vllm,Qwen/Qwen2.5-1.5B-Instruct,16,500,315726,163765,24.881683686748147,6581.74913168036,24.870464641600847,97.14859437751004,23024.5625,23024.5625,24576.0,336.79744578313245
