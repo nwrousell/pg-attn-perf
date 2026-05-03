@@ -1,4 +1,4 @@
-name: "vllm_b16_homogeneous"
+name: "vllm_homogeneous_l256_b16"
 model: "meta-llama/Llama-3.2-1B"
 backend: "vllm"
 # ALLOWED BLOCK SIZES: 8, 16, 32
