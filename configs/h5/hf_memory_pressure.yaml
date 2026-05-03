@@ -1,0 +1,19 @@
+name: "hf_memory_pressure"
+model: "Qwen/Qwen2.5-1.5B-Instruct"
+backend: "hf"
+dtype: "float16"
+seed: 42
+
+workload:
+  num_sequences: 500
+  prompt_length:
+    distribution: "uniform"
+    min: 256
+    max: 1024
+  output_tokens:
+    distribution: "uniform"
+    min: 128
+    max: 512
+
+stats:
+  nvml_poll_interval: 0.1

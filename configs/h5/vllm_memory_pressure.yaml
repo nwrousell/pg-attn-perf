@@ -1,0 +1,21 @@
+name: "vllm_b16_memory_pressure"
+model: "Qwen/Qwen2.5-1.5B-Instruct"
+backend: "vllm"
+block_size: 16
+dtype: "float16"
+seed: 42
+
+workload:
+  num_sequences: 500
+  prompt_length:
+    distribution: "uniform"
+    min: 256
+    max: 1024
+  output_tokens:
+    distribution: "uniform"
+    min: 128
+    max: 512
+
+stats:
+  nvml_poll_interval: 0.1
+  vllm_metrics_poll_interval: 0.1
