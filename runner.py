@@ -13,7 +13,7 @@ import yaml
 from dotenv import load_dotenv
 
 from backends import create_backend
-from stats import NVMLMonitor, VLLMMetricsMonitor, get_cuda_memory_stats, reset_cuda_memory_stats
+from stats import NVMLMonitor, VLLMMetricsMonitor
 from workload import generate_workload
 
 load_dotenv() # for HF token (to access gated models)
@@ -60,7 +60,6 @@ def run_experiment(config: dict):
 
     # Run
     print("Running workload...")
-    reset_cuda_memory_stats()
     monitor.start()
     if vllm_monitor:
         vllm_monitor.start()
@@ -72,7 +71,6 @@ def run_experiment(config: dict):
     monitor.stop()
     if vllm_monitor:
         vllm_monitor.stop()
-    cuda_mem = get_cuda_memory_stats()
 
     # Build summary
     total_output_tokens = request_df["output_tokens"].sum()
@@ -91,11 +89,12 @@ def run_experiment(config: dict):
         "throughput_tok_per_s": total_output_tokens / total_time,
         "avg_latency_s": request_df["latency_s"].mean(),
     }
-    summary.update(cuda_mem)
 
     if not nvml_df.empty:
         summary["avg_gpu_util_pct"] = nvml_df["gpu_util_pct"].mean()
         summary["peak_gpu_mem_used_mb"] = nvml_df["mem_used_mb"].max()
+        summary["avg_gpu_mem_used_mb"] = nvml_df["mem_used_mb"].mean()
+        summary["gpu_mem_total_mb"] = nvml_df["mem_total_mb"].iloc[0]
         summary["avg_power_w"] = nvml_df["power_w"].mean()
 
     vllm_metrics_df = pd.DataFrame()
@@ -113,10 +112,10 @@ def run_experiment(config: dict):
     print(f"\nResults written to {out_dir}/")
     print(f"  Throughput: {summary['throughput_tok_per_s']:.1f} tok/s")
     print(f"  Total time: {total_time:.2f}s")
-    if cuda_mem:
-        print(f"  Peak mem allocated: {cuda_mem['peak_mem_allocated_mb']:.0f} MB")
-        print(f"  Peak mem reserved:  {cuda_mem['peak_mem_reserved_mb']:.0f} MB")
-        print(f"  Fragmentation:      {cuda_mem['mem_fragmentation_mb']:.0f} MB")
+    if not nvml_df.empty:
+        print(f"  Peak GPU mem: {summary['peak_gpu_mem_used_mb']:.0f} MB "
+              f"/ {summary['gpu_mem_total_mb']:.0f} MB")
+        print(f"  Avg power:    {summary['avg_power_w']:.1f} W")
     if vllm_monitor and "peak_gpu_cache_usage_pct" in summary:
         print(f"  Peak KV cache usage: {summary['peak_gpu_cache_usage_pct']:.1f}%")
         print(f"  Preemptions:         {summary.get('total_preemptions', 0)}")

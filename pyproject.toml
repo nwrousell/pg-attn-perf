@@ -12,4 +12,7 @@ dependencies = [
     "pyyaml",
     "python-dotenv>=1.2.2",
     "accelerate>=1.13.0",
+    "jupyter>=1.1.1",
+    "ipykernel>=7.2.0",
+    "notebook>=7.5.6",
 ]
