@@ -15,4 +15,5 @@ dependencies = [
     "jupyter>=1.1.1",
     "ipykernel>=7.2.0",
     "notebook>=7.5.6",
+    "matplotlib>=3.10.9",
 ]
