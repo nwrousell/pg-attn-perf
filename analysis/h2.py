@@ -1,12 +1,18 @@
 # %%
-import pandas as pd
+"""H2: homogeneous vs heterogeneous workload — vLLM vs HF."""
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
-vllm_homo = pd.read_csv("results/vllm_b16_homogeneous/summary.csv")
-hf_homo = pd.read_csv("results/hf_homogeneous/summary.csv")
-vllm_hetero = pd.read_csv("results/vllm_b16_heterogeneous/summary.csv")
-hf_hetero = pd.read_csv("results/hf_heterogeneous/summary.csv")
+REPO_ROOT = Path(__file__).resolve().parent.parent
+R = REPO_ROOT / "results"
+
+vllm_homo = pd.read_csv(R / "vllm_b16_homogeneous/summary.csv")
+hf_homo = pd.read_csv(R / "hf_homogeneous/summary.csv")
+vllm_hetero = pd.read_csv(R / "vllm_b16_heterogeneous/summary.csv")
+hf_hetero = pd.read_csv(R / "hf_heterogeneous/summary.csv")
 
 # %%
 # Plot 1: Grouped bar chart — Throughput by workload type and backend
@@ -34,7 +40,7 @@ ax.set_title("H2: Throughput by Workload Heterogeneity")
 ax.legend()
 ax.grid(True, alpha=0.3, axis="y")
 plt.tight_layout()
-plt.savefig("results/h2_throughput_grouped.png", dpi=150)
+plt.savefig(R / "h2_throughput_grouped.png", dpi=150, bbox_inches="tight")
 plt.show()
 
 # %%
@@ -58,21 +64,26 @@ ax.set_title("H2: PagedAttention Speedup Over Contiguous KV Cache")
 ax.legend()
 ax.grid(True, alpha=0.3, axis="y")
 plt.tight_layout()
-plt.savefig("results/h2_speedup.png", dpi=150)
+plt.savefig(R / "h2_speedup.png", dpi=150, bbox_inches="tight")
 plt.show()
 
 # %%
 # Plot 3: Memory utilization grouped bar chart
 fig, ax = plt.subplots(figsize=(8, 5))
 
-def mem_pct(nvml_path):
+def mem_pct(nvml_path: Path) -> float:
     df = pd.read_csv(nvml_path)
     return (df["mem_used_mb"].mean() / df["mem_total_mb"].iloc[0]) * 100
 
-vllm_mem = [mem_pct("results/vllm_b16_homogeneous/nvml.csv"),
-            mem_pct("results/vllm_b16_heterogeneous/nvml.csv")]
-hf_mem = [mem_pct("results/hf_homogeneous/nvml.csv"),
-          mem_pct("results/hf_heterogeneous/nvml.csv")]
+
+vllm_mem = [
+    mem_pct(R / "vllm_b16_homogeneous/nvml.csv"),
+    mem_pct(R / "vllm_b16_heterogeneous/nvml.csv"),
+]
+hf_mem = [
+    mem_pct(R / "hf_homogeneous/nvml.csv"),
+    mem_pct(R / "hf_heterogeneous/nvml.csv"),
+]
 
 bars1 = ax.bar(x - width/2, vllm_mem, width, label="vLLM (PagedAttention)", color="tab:blue")
 bars2 = ax.bar(x + width/2, hf_mem, width, label="HF (Contiguous KV Cache)", color="tab:orange")
@@ -89,7 +100,7 @@ ax.set_title("H2: Memory Utilization by Workload Heterogeneity")
 ax.legend()
 ax.grid(True, alpha=0.3, axis="y")
 plt.tight_layout()
-plt.savefig("results/h2_memory.png", dpi=150)
+plt.savefig(R / "h2_memory.png", dpi=150, bbox_inches="tight")
 plt.show()
 
 # %%

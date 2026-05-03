@@ -1,16 +1,24 @@
 # %%
-import pandas as pd
-import matplotlib.pyplot as plt
+"""H1: vLLM vs HuggingFace homogeneous workload — throughput and NVML memory."""
+from pathlib import Path
 
-VLLM_DIR = "results/vllm_b16_homogeneous"
-HF_DIR = "results/hf_homogeneous"
+import matplotlib.pyplot as plt
+import pandas as pd
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+VLLM_DIR = REPO_ROOT / "results/vllm_b16_homogeneous"
+HF_DIR = REPO_ROOT / "results/hf_homogeneous"
+
+for label, p in ("vLLM", VLLM_DIR), ("HF", HF_DIR):
+    if not (p / "summary.csv").is_file():
+        raise FileNotFoundError(f"{label}: expected {p / 'summary.csv'}")
 
 # %%
-vllm_summary = pd.read_csv(f"{VLLM_DIR}/summary.csv")
-hf_summary = pd.read_csv(f"{HF_DIR}/summary.csv")
+vllm_summary = pd.read_csv(VLLM_DIR / "summary.csv")
+hf_summary = pd.read_csv(HF_DIR / "summary.csv")
 
-vllm_nvml = pd.read_csv(f"{VLLM_DIR}/nvml.csv")
-hf_nvml = pd.read_csv(f"{HF_DIR}/nvml.csv")
+vllm_nvml = pd.read_csv(VLLM_DIR / "nvml.csv")
+hf_nvml = pd.read_csv(HF_DIR / "nvml.csv")
 
 # %%
 # Plot 1: Total throughput bar chart
@@ -31,7 +39,7 @@ ax.set_ylabel("Throughput (tok/s)")
 ax.set_title("Total Throughput: vLLM vs HF (Homogeneous)")
 ax.grid(True, alpha=0.3, axis="y")
 plt.tight_layout()
-plt.savefig("results/h1_throughput.png", dpi=150)
+plt.savefig(REPO_ROOT / "results/h1_throughput.png", dpi=150, bbox_inches="tight")
 plt.show()
 
 # %%
@@ -54,7 +62,7 @@ ax.set_ylim(0, 100)
 ax.set_title("Memory Utilization: vLLM vs HF (Homogeneous)")
 ax.grid(True, alpha=0.3, axis="y")
 plt.tight_layout()
-plt.savefig("results/h1_memory.png", dpi=150)
+plt.savefig(REPO_ROOT / "results/h1_memory.png", dpi=150, bbox_inches="tight")
 plt.show()
 
 # %%
