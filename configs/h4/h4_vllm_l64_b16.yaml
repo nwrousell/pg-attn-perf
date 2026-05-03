@@ -1,0 +1,20 @@
+name: "h4_vllm_l64_b16"
+model: "meta-llama/Llama-3.2-1B"
+backend: "vllm"
+# ALLOWED BLOCK SIZES: 8, 16, 32
+block_size: 16
+dtype: "float16"
+seed: 42
+
+workload:
+  num_sequences: 1000
+  prompt_length:
+    distribution: "fixed"
+    value: 64
+  output_tokens:
+    distribution: "fixed"
+    value: 128
+
+stats:
+  nvml_poll_interval: 0.1
+  vllm_metrics_poll_interval: 0.1

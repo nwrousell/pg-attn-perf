@@ -15,15 +15,19 @@ echo "=== nsys profiling: $NAME ==="
 
 nsys profile \
     -o "$OUTDIR/nsys_report" \
+    --capture-range=cudaProfilerApi \
+    --capture-range-end=stop \
+    --cuda-graph-trace=node \
     --trace=cuda,nvtx,osrt \
     --force-overwrite=true \
     python runner.py "$CONFIG"
 
-echo "=== Exporting nsys stats to CSV ==="
+echo "=== Exporting kernel summary to CSV ==="
 
 nsys stats \
+    --report cuda_gpu_kern_sum \
     --format csv \
-    -o "$OUTDIR/nsys_stats" \
+    -o "$OUTDIR/nsys_kern" \
     "$OUTDIR/nsys_report.nsys-rep"
 
-echo "Done. Results in $OUTDIR/"
+echo "Done. Kernel summary -> $OUTDIR/nsys_kern_cuda_gpu_kern_sum.csv"
