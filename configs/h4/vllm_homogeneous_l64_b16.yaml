@@ -10,7 +10,7 @@ workload:
   num_sequences: 1000
   prompt_length:
     distribution: "fixed"
-    value: 256
+    value: 64
   output_tokens:
     distribution: "fixed"
     value: 128
